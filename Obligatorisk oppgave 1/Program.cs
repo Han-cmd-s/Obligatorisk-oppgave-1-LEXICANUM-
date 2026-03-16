@@ -14,6 +14,7 @@ namespace Obligatorisk_oppgave_1;
 /// Tillegg: Jeg simplifiserte koden i forhold til ID ettersom jeg prøvde å få det til å fungere på en annen måte først.
 /// Forsøke bestod av å bruke kode som skulle legge til S for student før ID, (og L for lærer) dette endte opp med å ikke fungere som jeg ønsket, og jeg endte opp med å bruke int for ID, og heller legge til 1000 for lærere, og 2000 for studenter. 
 /// Dette fungerte bedre, og var enklere å implementere i forhold til å finne brukere basert på ID senere i koden.
+/// 
 /// </summary>
 class Program
 {
@@ -30,7 +31,7 @@ class Program
             Console.WriteLine("[1] Register New Study Protocol (OpprettKurs)");
             Console.WriteLine("[2] Acolytes to and from Protocols (Sett Student inn i Kurs eller meld dem ut)");
             Console.WriteLine("[3] Manifest: Display Protocols & Initiates (Vis deltakere og Kurs)");
-            Console.WriteLine("[4] Query Protocol Database (Vis Kurs)");
+            Console.WriteLine("[4] Query Protocol Database (Vis Kurs & søk Kurs)");
             Console.WriteLine("[5] Search Data slates (Bøker)");
             Console.WriteLine("[6] Request Data Disbursement (Låne bok)");
             Console.WriteLine("[7] Return Data slate to Archives (Returner bok)");
@@ -42,7 +43,7 @@ class Program
             string input = Console.ReadLine();
             if (int.TryParse(input, out int valg)) // Validering av input for å sikre at det er et gyldig tall som vist i siste forelesning
                 try
-            {
+                {
                     if (valg < 0 || valg > 9)
                     {
                         Console.WriteLine(">>> INVALID COMMAND. PLEASE ENTER A NUMBER BETWEEN 0 AND 9."); // Validering av input for å sikre at det er et gyldig tall mellom 0 og 9, og gir en feilmelding hvis det ikke er det
@@ -119,11 +120,27 @@ class Program
 
                             case "4":
                                 Console.WriteLine("=== ALL AVAILABLE COURSES ===");
-                                foreach (var k in system.AlleKurs) // Itererer gjennom alle kurs i AlleKurs-listen i Lexicanum-klassen og skriver ut informasjon om hvert kurs, inkludert kode, navn, poeng og maks antall studenter
+                                Console.WriteLine(">>> ENTER COURSE CODE TO SEARCH (Press enter for all courses):");
+                                string kursSøk = Console.ReadLine();
+
+                                Console.WriteLine("<<COURSE RETREIVAL PROTOCOL INITIATED>>");
+                                //LINQ system for søk av kurs beholder funksjonen med å vise en liste over kurs også.
+                                var kursTreff = system.AlleKurs.Where(k =>
+                                string.IsNullOrEmpty(kursSøk) || k.Navn.Contains(kursSøk, StringComparison.OrdinalIgnoreCase) || k.Kode.ToString() == kursSøk).ToList();
+
+                                if (!kursTreff.Any())
                                 {
-                                    Console.WriteLine($"[{k.Kode}] {k.Navn} - {k.Poeng} poeng (Max: {k.MaksStudenter})");
+                                    Console.WriteLine(">>> ERROR: NO COURSES MATCHING YOUR CRITERIA.");
                                 }
-                                Console.WriteLine(">>> PRESS ENTER TO RETURN");
+                                else
+                                {
+                                    foreach (var k in kursTreff)
+                                    {
+                                        Console.WriteLine($"[{k.Kode}] {k.Navn} - {k.Poeng} poeng (Max: {k.MaksStudenter})");
+                                    }
+                                }
+
+                                Console.WriteLine("\n>>> SEARCH COMPLETE. PRESS ENTER TO RETURN.");
                                 Console.ReadLine();
                                 break;
 
@@ -249,7 +266,7 @@ class Program
                                         Console.WriteLine(">>> ENTER DEPARTMENT:");
                                         string avdeling = Console.ReadLine();
 
-                                        system.RegistrerLærer(nyId, nyNavn, nyEpost, stilling, avdeling);
+                                        system.RegistrerAnsatt(nyId, nyNavn, nyEpost, stilling, avdeling);
                                         Console.WriteLine(">>> EMPLOYEE REGISTERED.");
                                     }
                                 }
@@ -263,11 +280,11 @@ class Program
                         }
 
                     }
-                 }
-            catch (FormatException)
-            {
-             Console.WriteLine(">>> INVALID INPUT. PLEASE ENTER A NUMBER BETWEEN 0 AND 9.");
-            }
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine(">>> INVALID INPUT. PLEASE ENTER A NUMBER BETWEEN 0 AND 9.");
+                }
 
         }
     }
