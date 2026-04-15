@@ -9,12 +9,17 @@ public class Bruker
     public int Id { get; set; } 
     public string Navn { get; set; }
     public string Epost { get; set; }
+    public string Passord { get; set; }
+    public string Rolle { get; set; }
 
-    public Bruker(int id, string navn, string epost)
+
+    public Bruker(int id, string navn, string epost, string passord, string rolle)
     {
         Id = id;
         Navn = navn;
         Epost = epost;
+        Passord = passord;
+        Rolle = rolle;
     }
 
 }

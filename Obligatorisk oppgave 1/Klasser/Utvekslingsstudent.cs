@@ -10,8 +10,8 @@ public class Utvekslingsstudent : Student //arver fra Student-klassen, som igjen
     public string Land { get; set; }
     public string Periode { get; set; } 
 
-    public Utvekslingsstudent(int id, string navn, string epost, string hjemUni, string land, string periode) 
-        : base(id, navn, epost) 
+    public Utvekslingsstudent(int id, string navn, string epost, string passord, string hjemUni, string land, string periode) 
+        : base(id, navn, epost, passord) 
     {
         Hjemuniversitet = hjemUni;
         Land = land;

@@ -32,25 +32,25 @@ public class Lexicanum
         RegistrerKurs(400, "Abominable Intelligence History", 10, 45);
 
 
-        // Lærer - (int id, string navn, string epost, string stilling, string avdeling)
-        RegistrerAnsatt(1001, "Dr. Magnus Aurelius", "Aurelius4Evar@Teach.com", "Foreleser", "Foreleser");
+        // Lærer - (int id, string navn, string epost, string passord, string stilling, string avdeling)
+        RegistrerAnsatt(1001, "Dr. Magnus Aurelius", "Aurelius4Evar@Teach.com", "123", "Foreleser", "Foreleser");
         AlleBrukere.Add(AlleLærere.Last());
-        RegistrerAnsatt(1002, "Professor Octavia Voss", "Voss@Teach.com", "Bibliotekar", "Bibliotek");
+        RegistrerAnsatt(1002, "Professor Octavia Voss", "Voss@Teach.com", "123", "Bibliotekar", "Bibliotek");
         AlleBrukere.Add(AlleLærere.Last());
-        RegistrerAnsatt(1003, "Dr. Lucius Blackwood", "LuciBlack@Teach.com", "Fagansvarlig", "Administrasjon");
+        RegistrerAnsatt(1003, "Dr. Lucius Blackwood", "LuciBlack@Teach.com", "123", "Fagansvarlig", "Administrasjon");
         AlleBrukere.Add(AlleLærere.Last());
 
 
-        // Studenter - (int id, string navn, string epost)
-        RegistrerStudent(2001, "Acolyte Lyra", "Lyr@Stud.Teach.com");
+        // Studenter - (int id, string navn, string epost, string passord)
+        RegistrerStudent(2001, "Acolyte Lyra", "Lyr@Stud.Teach.com", "321");
         AlleBrukere.Add(AlleStudenter.Last());
-        RegistrerStudent(2002, "Acolyte Orion", "Orion@Stud.Teach.com");
+        RegistrerStudent(2002, "Acolyte Orion", "Orion@Stud.Teach.com", "321");
         AlleBrukere.Add(AlleStudenter.Last());
-        RegistrerStudent(2003, "Acolyte Selene", "Selen@Stud.Teach.Com");
+        RegistrerStudent(2003, "Acolyte Selene", "Selen@Stud.Teach.Com", "321");
         AlleBrukere.Add(AlleStudenter.Last());
 
-        // Utvekslingsstudent - (int id, string navn, string epost, string hjemUni, string land, string periode)
-        RegistrerUtvekslingsStudent(3001, "Acolyte Nova", "Nova@stud.teach.com", "University of Eldoria", "Eldoria", "2024-2025");
+        // Utvekslingsstudent - (int id, string navn, string epost, string passord, string hjemUni, string land, string periode)
+        RegistrerUtvekslingsStudent(3001, "Acolyte Nova", "Nova@stud.teach.com", "321", "University of Eldoria", "Eldoria", "2024-2025");
         AlleBrukere.Add(AlleStudenter.Last());
 
 
@@ -68,16 +68,16 @@ public class Lexicanum
         AlleKurs.Add(nyttKurs);
     }
 
-    public void RegistrerAnsatt(int id, string navn, string epost, string stilling, string avdeling)
+    public void RegistrerAnsatt(int id, string navn, string epost, string passord, string stilling, string avdeling)
     {
-        Ansatt nyLærer = new Ansatt(id, navn, epost, stilling, avdeling);
+        Ansatt nyLærer = new Ansatt(id, navn, epost, passord, stilling, avdeling);
         AlleLærere.Add(nyLærer);
         AlleBrukere.Add(nyLærer);
     }
 
-    public void RegistrerStudent(int id, string navn, string epost)
+    public void RegistrerStudent(int id, string navn, string epost, string passord)
     {
-        Student nyStudent = new Student(id, navn, epost);
+        Student nyStudent = new Student(id, navn, epost, passord);
         AlleStudenter.Add(nyStudent);
         AlleBrukere.Add(nyStudent);
     }
@@ -88,9 +88,9 @@ public class Lexicanum
         AlleBøker.Add(nyBok);
     }
 
-    public void RegistrerUtvekslingsStudent(int id, string navn, string epost, string hjemUni, string land, string periode)
+    public void RegistrerUtvekslingsStudent(int id, string navn, string epost, string passord, string hjemUni, string land, string periode)
     {
-        Utvekslingsstudent nyUtvekslingsstudent = new Utvekslingsstudent(id, navn, epost, hjemUni, land, periode);
+        Utvekslingsstudent nyUtvekslingsstudent = new Utvekslingsstudent(id, navn, epost, passord, hjemUni, land, periode);
         AlleStudenter.Add(nyUtvekslingsstudent);
         AlleBrukere.Add(nyUtvekslingsstudent);
     }
