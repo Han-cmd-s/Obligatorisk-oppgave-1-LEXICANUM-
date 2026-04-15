@@ -77,8 +77,7 @@ public class Lexicanum
 
         if (eksisterer)
         {
-            Console.WriteLine($">>>ERROR<<< Protocol {kode} - {navn} already exists!");
-            return;
+            throw new Exception($">>>ERROR<<< Protocol {kode} already exists in the archives!");
         }
         Kurs nyttKurs = new Kurs(kode, navn, poeng, maks);
         AlleKurs.Add(nyttKurs);
@@ -151,25 +150,16 @@ public class Lexicanum
         var kurs = AlleKurs.FirstOrDefault(k => k.Kode == kursKode);
 
         if (student == null || kurs == null) // sjekker for student og kurs
-        {
-            Console.WriteLine(">>> ERROR: Student or course not found."); // feilmelding om studenten ID eller kurs kode er feil.
-            return;
-        }
+        throw new Exception(">>>ERROR: student or course not found in the archives!");
 
         // Sjekk om student allerede er påmeldt
         if (student.Kursliste.Contains(kurs))
-        {
-            Console.WriteLine(">>> ERROR: Student is already assigned to this course.");
-            return;
-        }
+        throw new Exception($">>>ERROR: {student.Navn} is already enrolled in {kurs.Navn}!");
 
         // Sjekk kapasitet i kurset ved å telle hvor mange studenter som allerede er påmeldt det aktuelle kurset. Dette gjøres ved å bruke LINQ for å telle antall studenter i AlleStudenter som har det aktuelle kurset i sin Kursliste. (ikke brukt per nå på grunn av større kurs og få studenter)
         int antallPåmeldte = AlleStudenter.Count(s => s.Kursliste.Contains(kurs));
         if (antallPåmeldte >= kurs.MaksStudenter)
-        {
-            Console.WriteLine($">>> ERROR: COURSE {kurs.Navn} IS FULL.");
-            return;
-        }
+        throw new Exception($">>>ERROR: {kurs.Navn} has reached maximum capacity!");
 
         student.Kursliste.Add(kurs);
         Console.WriteLine($">>> {student.Navn} successfully assigned to {kurs.Navn}.");
@@ -273,20 +263,11 @@ public class Lexicanum
         var bruker = AlleBrukere.FirstOrDefault(b => b.Id == id); // Finner bruker basert på ID
         var bok = AlleBøker.FirstOrDefault(b => b.Tittel.Equals(tittel, StringComparison.OrdinalIgnoreCase)); // Finner bok basert på tittel.
 
-        if (bruker == null)
-        {
-            Console.WriteLine(">>> ERROR: ACOLYTE NOT FOUND.");
-        }
+        if (bruker == null) throw new Exception(">>> ERROR: USER NOT FOUND IN THE ARCHIVES!"); // Sjekker om bruker finnes, hvis ikke, returner melding
 
-        else if (bok == null)
-        {
-            Console.WriteLine(">>> ERROR: DATA SLATE NOT FOUND.");
-        }
+        if (bok == null)throw new Exception(">>> ERROR: DATA-SLATE NOT FOUND IN THE ARCHIVES!"); // Sjekker om bok finnes, hvis ikke, returner melding
         // sjekker om det er eksemplarer igjen av boken.
-        else if (bok.AntallEksemplarer <= 0)
-        {
-            Console.WriteLine($">>> ERROR: NO COPIES OF '{bok.Tittel}' AVAILABLE IN THE ARCHIVES."); // Hvis ingen eksemplarer igjen, returner melding
-        }
+        if (bok.AntallEksemplarer <= 0) throw new Exception(">>> ERROR: NO COPIES LEFT IN THE ARCHIVES!"); // Sjekker om det er eksemplarer igjen, hvis ikke, returner melding
 
         else
         {
